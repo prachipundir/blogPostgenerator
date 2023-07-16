@@ -29,11 +29,4 @@ Contributing:
 3. Make your changes and commit.
 4. Submit a pull request for review.
 
-License:
-This project is licensed under the MIT License - see the LICENSE file for details.
 
-Disclaimer:
-This project is for educational and informational purposes only. Use responsibly and comply with terms of service and legal requirements when scraping data.
-
-Contact:
-For any questions or feedback, please email: example@example.com
