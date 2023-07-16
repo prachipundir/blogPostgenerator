@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Optimized Blog Post Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            color: #007bff;
+        }
+        label {
+            font-weight: bold;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .blog-post {
+            margin-top: 20px;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+        .blog-post.visible {
+            opacity: 1;
+        }
+        .meta-description {
+            font-style: italic;
+            color: #777;
+        }
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #777;
+        }
+        .spinner {
+            display: none;
+            border: 4px solid rgba(0, 0, 0, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid #007bff;
+            width: 40px;
+            height: 40px;
+            animation: spin 2s linear infinite;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <h1>Optimized Blog Post Generator</h1>
+    <form id="blogForm">
+        <label for="topic">Select a topic:</label>
+        <select id="topic" name="topic">
+            <option value="time management">Time Management</option>
+            <option value="positive thinking">Positive Thinking</option>
+            <option value="online business">Online Business</option>
+            <option value="healthy snacks">Healthy Snacks</option>
+            <option value="public speaking">Public Speaking</option>
+            <option value="regular exercise">Regular Exercise</option>
+            <option value="productivity">Productivity</option>
+            <option value="goal setting">Goal Setting</option>
+            <option value="adventure travel">Adventure Travel</option>
+            <option value="building relationships">Building Relationships</option>
+        </select>
+        <br>
+        <button type="button" onclick="generateBlogPost()">Generate Blog Post</button>
+        <div class="spinner" id="loadingSpinner"></div>
+    </form>
+    <div class="blog-post" id="blogPost">
+        <!-- Blog post content will be dynamically updated here -->
+    </div>
+    <footer>
+        &copy; 2023 Your Company | All rights reserved
+    </footer>
+
+    <script>
+        function generateBlogPost() {
+            const topic = document.getElementById('topic').value;
+            const blogPostElement = document.getElementById('blogPost');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+
+            // Show loading spinner while generating the blog post
+            blogPostElement.classList.remove('visible');
+            loadingSpinner.style.display = 'block';
+
+            fetch('/generate_blog_post', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `topic=${encodeURIComponent(topic)}`,
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Hide loading spinner and show the generated blog post
+                loadingSpinner.style.display = 'none';
+                const blogPostHTML = `
+                    <h2>Topic: ${data.topic}</h2>
+                    <p>${data.content}</p>
+                    <p class="meta-description">${data.meta_description}</p>
+                `;
+                blogPostElement.innerHTML = blogPostHTML;
+                blogPostElement.classList.add('visible');
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>
